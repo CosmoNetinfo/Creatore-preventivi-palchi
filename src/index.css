@@ -5,11 +5,11 @@
 /* Stili base per l'anteprima a schermo */
 .a4-page {
   width: 210mm;
-  height: 297mm;
+  min-height: 297mm;
   background: white;
   margin: 0 auto;
   position: relative;
-  overflow: hidden;
+  overflow: visible;
 }
 
 /* Stili specifici per la STAMPA / PDF */
@@ -48,12 +48,12 @@
   /* Forza le dimensioni della pagina A4 */
   .a4-page {
     width: 210mm !important;
-    height: 297mm !important;
+    min-height: 297mm !important;
     margin: 0 !important;
     page-break-after: always !important;
     border: none !important;
     box-shadow: none !important;
-    overflow: hidden !important;
+    overflow: visible !important;
   }
 
   .a4-page:last-child {

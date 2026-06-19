@@ -166,7 +166,7 @@ export const DeliveryNote: React.FC<DeliveryNoteProps> = ({ data }) => {
          <div className="border-l-4 border-slate-200 pl-4 p-4">
             <h3 className="text-[10px] font-black text-slate-400 uppercase mb-1 tracking-widest">Dettaglio Commessa</h3>
             <p className="text-sm font-bold text-slate-800">{data.title}</p>
-            <p className="text-[10px] font-bold text-emerald-600 uppercase mt-1">SISTEMA: {data.stageType}</p>
+            <p className="text-[10px] font-bold text-emerald-600 uppercase mt-1">SISTEMA: {data.stageType} {structural ? `(${structural.L}x${structural.P} MT)` : ''}</p>
          </div>
       </div>
 

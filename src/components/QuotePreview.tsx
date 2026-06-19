@@ -149,7 +149,7 @@ export const QuotePreview: React.FC<QuotePreviewProps> = ({ data }) => {
 
       {/* ----------------- PAGE 2: DETAILS & COSTS ----------------- */}
       <div className="a4-page shadow-lg print:shadow-none p-[15mm] flex flex-col relative print:mb-0">
-        <div className="flex justify-between items-center border-b border-slate-200 pb-4 mb-8">
+        <div className="flex justify-between items-center border-b border-slate-200 pb-4 mb-4">
            <div className="text-brand-600 font-bold text-xl">
               {data.company.logoUrl ? (
                  <img src={data.company.logoUrl} alt="Logo" className="h-8 object-contain" />
@@ -158,27 +158,27 @@ export const QuotePreview: React.FC<QuotePreviewProps> = ({ data }) => {
         </div>
 
         <div className="flex-grow">
-          <h2 className="text-lg font-bold text-slate-800 mb-6">Dettaglio</h2>
-          <table className="w-full text-sm mb-8">
+          <h2 className="text-lg font-bold text-slate-800 mb-3">Dettaglio</h2>
+          <table className="w-full text-sm mb-4">
             <thead>
               <tr className="bg-slate-100 text-slate-600 border-b border-slate-200">
-                <th className="py-3 px-4 text-left font-semibold w-[35%] rounded-tl-lg whitespace-nowrap">Descrizione</th>
-                <th className="py-3 px-4 text-left font-semibold w-[25%] whitespace-nowrap">Specs</th>
-                <th className="py-3 px-4 text-center font-semibold whitespace-nowrap">Q.tà</th>
-                <th className="py-3 px-4 text-right font-semibold whitespace-nowrap">Prezzo Unit.</th>
-                <th className="py-3 px-4 text-right font-semibold rounded-tr-lg whitespace-nowrap">Totale</th>
+                <th className="py-1.5 px-4 text-left font-semibold w-[35%] rounded-tl-lg whitespace-nowrap">Descrizione</th>
+                <th className="py-1.5 px-4 text-left font-semibold w-[25%] whitespace-nowrap">Specs</th>
+                <th className="py-1.5 px-4 text-center font-semibold whitespace-nowrap">Q.tà</th>
+                <th className="py-1.5 px-4 text-right font-semibold whitespace-nowrap">Prezzo Unit.</th>
+                <th className="py-1.5 px-4 text-right font-semibold rounded-tr-lg whitespace-nowrap">Totale</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
               {data.items.map((item) => (
                 <tr key={item.id}>
-                  <td className="py-3 px-4 text-slate-700 font-medium align-top">{item.description}</td>
-                  <td className="py-3 px-4 text-slate-500 italic align-top">{item.specs}</td>
-                  <td className="py-3 px-4 text-center text-slate-600 align-top whitespace-nowrap">
+                  <td className="py-1.5 px-4 text-slate-700 font-medium align-top">{item.description}</td>
+                  <td className="py-1.5 px-4 text-slate-500 italic align-top">{item.specs}</td>
+                  <td className="py-1.5 px-4 text-center text-slate-600 align-top whitespace-nowrap">
                     {item.quantity} <span className="text-xs text-slate-400 font-normal">{getUnit(item.description)}</span>
                   </td>
-                  <td className="py-3 px-4 text-right text-slate-600 align-top whitespace-nowrap">{formatCurrency(item.unitPrice)}</td>
-                  <td className="py-3 px-4 text-right text-slate-800 font-semibold align-top whitespace-nowrap">
+                  <td className="py-1.5 px-4 text-right text-slate-600 align-top whitespace-nowrap">{formatCurrency(item.unitPrice)}</td>
+                  <td className="py-1.5 px-4 text-right text-slate-800 font-semibold align-top whitespace-nowrap">
                     {formatCurrency(item.quantity * item.unitPrice)}
                   </td>
                 </tr>
@@ -186,7 +186,7 @@ export const QuotePreview: React.FC<QuotePreviewProps> = ({ data }) => {
             </tbody>
           </table>
 
-          <div className="flex flex-row gap-8 mb-8 items-start">
+          <div className="flex flex-row gap-8 mb-4 items-start">
             <div className="w-1/2 space-y-4">
                 <div className="bg-slate-50 p-4 rounded-lg border border-slate-200 text-xs">
                     <h4 className="font-bold text-slate-700 mb-2 uppercase">Dati Bancari</h4>
@@ -237,7 +237,7 @@ export const QuotePreview: React.FC<QuotePreviewProps> = ({ data }) => {
           </div>
         </div>
 
-        <div className="mt-auto mb-32 grid grid-cols-2 gap-20">
+        <div className="mt-auto mb-20 grid grid-cols-2 gap-20">
            <div className="border-t border-slate-300 pt-2 text-center text-xs text-slate-400 relative">
               <img src="https://easyevent.it/wp-content/uploads/2025/11/firma.png" alt="Firma" className="absolute bottom-4 left-1/2 -translate-x-1/2 max-h-20 object-contain pointer-events-none" />
               Timbro e Firma EasyEvent
