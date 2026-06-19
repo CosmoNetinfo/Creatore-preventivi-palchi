@@ -158,15 +158,15 @@ const App: React.FC = () => {
       <main className="flex-1 max-w-[1920px] mx-auto w-full p-4 md:p-8">
         <div className="flex flex-col xl:flex-row gap-8">
           
-          {/* EDITOR SINISTRO (Nascondi se siamo nel magazzino) */}
-          {viewMode !== 'warehouse' && (
+          {/* EDITOR SINISTRO (Solo per la vista Preventivo) */}
+          {viewMode === 'quote' && (
             <div className="w-full xl:w-1/3 space-y-6 print:hidden">
               <QuoteEditor data={quoteData} onChange={setQuoteData} />
             </div>
           )}
 
-          {/* ANTEPRIMA DESTRA CON TAB */}
-          <div className={viewMode === 'warehouse' ? "w-full flex flex-col" : "w-full xl:w-2/3 flex flex-col"}>
+          {/* AREA DI CONTENUTO PRINCIPALE */}
+          <div className={viewMode === 'quote' ? "w-full xl:w-2/3 flex flex-col" : "w-full flex flex-col"}>
              
              {/* SELETTORE DOCUMENTI (TABS) */}
              <div className="mb-6 flex flex-wrap gap-2 p-1.5 bg-slate-200 rounded-2xl print:hidden self-center">
