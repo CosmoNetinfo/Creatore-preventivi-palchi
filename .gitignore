@@ -31,3 +31,7 @@ src-tauri/gen
 # User source assets directory
 loghi palchi/
 easy palchi/
+
+# Tauri signing keys (mai committare la chiave privata!)
+src-tauri/tauri.key
+src-tauri/tauri.key.pub

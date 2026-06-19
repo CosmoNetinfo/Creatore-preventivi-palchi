@@ -2,9 +2,6 @@ name: Release
 
 on:
   push:
-    branches:
-      - main
-      - master
     tags:
       - 'v*'
   workflow_dispatch:
@@ -14,7 +11,43 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  create-release:
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    outputs:
+      release_id: ${{ steps.create-release.outputs.id }}
+      release_upload_url: ${{ steps.create-release.outputs.upload_url }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Get version from tag
+        id: get_version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release
+        id: create-release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref_name }}
+          release_name: EasyEvent v${{ steps.get_version.outputs.VERSION }}
+          body: |
+            ## EasyEvent Desktop v${{ steps.get_version.outputs.VERSION }}
+
+            ### Installazione
+            - **Windows**: scarica il file `.msi` o `.exe`
+            - **macOS**: scarica il file `.dmg`
+
+            ### Novità
+            Vedi il codice sorgente per i dettagli delle modifiche.
+          draft: false
+          prerelease: false
+
   build-tauri:
+    needs: create-release
     permissions:
       contents: write
     strategy:
@@ -50,13 +83,9 @@ jobs:
         run: npm install
 
       - name: Build Tauri app
-        uses: tauri-apps/tauri-action@v0
+        uses: tauri-apps/tauri-action@v0.5
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tagName: v__VERSION__
-          releaseName: 'EasyEvent v__VERSION__'
-          releaseBody: 'EasyEvent Desktop Release'
-          releaseDraft: false
-          prerelease: false
+          releaseId: ${{ needs.create-release.outputs.release_id }}
           args: ${{ matrix.args }}
