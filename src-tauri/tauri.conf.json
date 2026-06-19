@@ -23,6 +23,15 @@
       "csp": null
     }
   },
+  "plugins": {
+    "updater": {
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDk3OTgyRURFQkM5MDJBODAKUldTQUtwQzgzaTZZbDdKeUN3WE40YmNzUFQ4bTM2RFhkK3hwdGhiWUpNemxVWTVsSTNlOXo0cEcK",
+      "endpoints": [
+        "https://github.com/CosmoNetinfo/Creatore-preventivi-palchi/releases/latest/download/latest.json"
+      ],
+      "dialog": false
+    }
+  },
   "bundle": {
     "active": true,
     "targets": "all",
@@ -35,3 +44,4 @@
     ]
   }
 }
+

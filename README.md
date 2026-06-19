@@ -111,21 +111,12 @@ L'applicazione è configurata per generare le build di rilascio Windows e macOS 
 
 ## 🎨 Risorse Grafiche (Branding)
 
-I loghi e le icone ufficiali dell'applicazione sono memorizzati all'interno della cartella `public/brand/` per l'uso nel build template e la documentazione:
+I loghi e le icone ufficiali dell'applicazione sono memorizzati all'interno della cartella `public/brand/`:
 
-* **Logo Completo (PNG)**
-  
-  ![Logo Completo](public/brand/logo_completo.png)
-
-* **Logo Vettoriale (SVG)**
-  
-  ![Logo SVG](public/brand/easyevent_logo.svg)
-
-* **Icona App 512px (PNG)**
-  
-  ![Icona App](public/brand/icona_app_512px.png)
-
-* **Icona Vettoriale (SVG)**
-  
-  ![Icona SVG](public/brand/easyevent_icon.svg)
-
+| File | Utilizzo |
+|---|---|
+| `public/brand/logo_completo.png` | Logo completo con wordmark |
+| `public/brand/easyevent_logo.svg` | Logo vettoriale |
+| `public/brand/icona_app_512px.png` | Icona app 512px |
+| `public/brand/easyevent_icon.svg` | Icona vettoriale |
+| `public/favicon-512.png` | Favicon applicazione |

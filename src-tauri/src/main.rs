@@ -1,4 +1,4 @@
-// Prevents additional console window on Windows in release, do not remove!
+// Prevents additional console window on Windows in release, do not remove!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 mod db;
@@ -6,6 +6,8 @@ mod commands;
 
 fn main() {
     tauri::Builder::default()
+        .plugin(tauri_plugin_updater::Builder::new().build())
+        .plugin(tauri_plugin_process::init())
         .setup(|app| {
             // Inizializza il database SQLite locale e migrazioni
             db::init_db(app.handle())?;
