@@ -1,0 +1,24 @@
+[package]
+name = "easyevent-desktop"
+version = "1.0.0"
+description = "EasyEvent Desktop Quote Management"
+authors = ["EasyEvent"]
+edition = "2021"
+
+[build-dependencies]
+tauri-build = { version = "2.0.3", features = [] }
+
+[dependencies]
+tauri = { version = "2.1.1", features = [] }
+tauri-plugin-sql = { version = "2.1.0", features = ["sqlite"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+uuid = { version = "1.0", features = ["v4", "serde"] }
+rusqlite = { version = "0.31.0", features = ["bundled"] }
+
+[profile.release]
+panic = "abort"
+codegen-units = 1
+lto = true
+opt-level = "s"
+strip = true
