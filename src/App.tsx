@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { QuoteEditor } from './components/QuoteEditor';
 import { QuotePreview } from './components/QuotePreview';
 import { ProductionSheet } from './components/ProductionSheet';
@@ -27,6 +27,58 @@ import {
 import { DatabaseService } from './services/database';
 
 type ActiveSection = 'quotes' | 'checklists' | 'production' | 'warehouse';
+
+// Contenitore ad autoscala per anteprima A4
+const PreviewContainer: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [scale, setScale] = useState(1);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (containerRef.current) {
+        const parentWidth = containerRef.current.getBoundingClientRect().width;
+        // La pagina A4 ha larghezza di 210mm (circa 794px in pixel dello schermo).
+        // Aggiungiamo 32px di tolleranza di padding.
+        const targetWidth = 826;
+        if (parentWidth < targetWidth) {
+          setScale(parentWidth / targetWidth);
+        } else {
+          setScale(1);
+        }
+      }
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    
+    const observer = new ResizeObserver(handleResize);
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
+    }
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      observer.disconnect();
+    };
+  }, []);
+
+  return (
+    <div ref={containerRef} className="w-full flex justify-center bg-slate-400 rounded-3xl p-4 overflow-hidden print:p-0 print:bg-transparent shadow-inner">
+      <div 
+        style={{ 
+          transform: `scale(${scale})`, 
+          transformOrigin: 'top center',
+          width: '210mm',
+          height: scale < 1 ? `calc(297mm * ${scale})` : 'auto',
+          transition: 'transform 0.05s ease-out'
+        }}
+        className="print:transform-none print:w-auto print:h-auto"
+      >
+        {children}
+      </div>
+    </div>
+  );
+};
 
 const App: React.FC = () => {
   const [activeSection, setActiveSection] = useState<ActiveSection>('quotes');
@@ -257,11 +309,11 @@ const App: React.FC = () => {
                     <QuoteEditor data={quoteData} onChange={setQuoteData} />
                   </div>
                   <div className="w-full xl:w-2/3 flex flex-col">
-                    <div className="w-full flex justify-center bg-slate-400 rounded-3xl p-4 md:p-12 overflow-x-auto print:p-0 print:bg-transparent shadow-inner">
+                    <PreviewContainer>
                       <div id="printable-root" className="relative">
                         <QuotePreview data={quoteData} />
                       </div>
-                    </div>
+                    </PreviewContainer>
                   </div>
                 </div>
               </div>
@@ -412,11 +464,11 @@ const App: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="w-full flex justify-center bg-slate-400 rounded-3xl p-4 md:p-12 overflow-x-auto print:p-0 print:bg-transparent shadow-inner">
+                <PreviewContainer>
                   <div id="printable-root" className="relative">
                     <DeliveryNote data={selectedQuoteForChecklist} />
                   </div>
-                </div>
+                </PreviewContainer>
               </div>
             ) : (
               // SELEZIONE PREVENTIVO PER CHECKLIST
@@ -486,11 +538,11 @@ const App: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="w-full flex justify-center bg-slate-400 rounded-3xl p-4 md:p-12 overflow-x-auto print:p-0 print:bg-transparent shadow-inner">
+                <PreviewContainer>
                   <div id="printable-root" className="relative">
                     <ProductionSheet data={selectedQuoteForProduction} />
                   </div>
-                </div>
+                </PreviewContainer>
               </div>
             ) : (
               // SELEZIONE PREVENTIVO PER PRODUZIONE
