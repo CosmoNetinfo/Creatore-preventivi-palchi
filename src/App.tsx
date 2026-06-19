@@ -182,7 +182,7 @@ const App: React.FC = () => {
         {/* Logo / Header */}
         <div className="p-6 border-b border-slate-800 flex items-center gap-3">
           <div className="p-1 rounded-xl bg-white flex items-center justify-center">
-            <img src="/brand/icona_app_512px.png" alt="EasyEvent" className="h-8 w-8 object-contain" />
+            <img src="/favicon-512.png" alt="EasyEvent" className="h-8 w-8 object-contain" />
           </div>
           <div>
             <h1 className="font-black text-lg text-white leading-none tracking-tight">EasyEvent</h1>
