@@ -27,3 +27,6 @@ dist-ssr
 # Tauri build artifacts
 src-tauri/target
 src-tauri/gen
+
+# User source assets directory
+loghi palchi/

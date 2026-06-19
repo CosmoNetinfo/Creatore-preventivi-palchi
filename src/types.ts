@@ -1,5 +1,5 @@
 
-export const DEFAULT_LOGO_URL = 'https://easyevent.it/wp-content/uploads/2025/11/logo-preventivi.png';
+export const DEFAULT_LOGO_URL = '/logo_completo.png';
 
 export type QuoteStatus = 'draft' | 'sold';
 

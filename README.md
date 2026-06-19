@@ -1,5 +1,7 @@
 # EasyEvent Desktop 🎪
 
+![EasyEvent Logo](public/logo_completo.png)
+
 Applicazione desktop standalone (Windows + macOS) per la creazione di preventivi, checklist di carico, schede di produzione e tracciamento automatico del magazzino per palchi modulari da noleggio (EasyEvent S.r.l.s.).
 
 Sviluppata con **Tauri 2**, **React 19**, **TypeScript**, **Vite** e **SQLite**.
