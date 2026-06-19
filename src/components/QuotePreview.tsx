@@ -6,14 +6,22 @@ interface QuotePreviewProps {
   data: QuoteData;
 }
 
-const FIRST_PAGE_BG = 'https://easyevent.it/wp-content/uploads/2025/12/background-3-scaled.jpg';
+import backgroundCover from '../assets/quote/background-cover.jpg';
+import dbPro6Image from '../assets/quote/db-pro-6.png';
+import miniImage from '../assets/quote/mini.png';
+import miniInoxImage from '../assets/quote/mini-inox.png';
+import firmaImage from '../assets/quote/firma.png';
+import bannerImage from '../assets/quote/banner.jpeg';
+import portfolioImage from '../assets/quote/portfolio-clienti.png';
+
+const FIRST_PAGE_BG = backgroundCover;
 
 // Map stage types to placeholders if no real image provided yet
 const PRODUCT_IMAGES: Record<string, string> = {
-  'DB PRO 6': 'https://easyevent.it/wp-content/uploads/2025/11/db-pro-6.png',
+  'DB PRO 6': dbPro6Image,
   'DB PRO 6 INOX': 'https://placehold.co/800x600/eeeeee/333333?text=DB+PRO+6+INOX',
-  'MINI': 'https://easyevent.it/wp-content/uploads/2025/11/mini.png',
-  'MINI INOX': 'https://easyevent.it/wp-content/uploads/2025/11/mini-inox.png',
+  'MINI': miniImage,
+  'MINI INOX': miniInoxImage,
   'PEDANA': 'https://placehold.co/800x600/eeeeee/333333?text=PEDANA+MODULARE'
 };
 
@@ -239,7 +247,7 @@ export const QuotePreview: React.FC<QuotePreviewProps> = ({ data }) => {
 
         <div className="mt-auto mb-20 grid grid-cols-2 gap-20">
            <div className="border-t border-slate-300 pt-2 text-center text-xs text-slate-400 relative">
-              <img src="https://easyevent.it/wp-content/uploads/2025/11/firma.png" alt="Firma" className="absolute bottom-4 left-1/2 -translate-x-1/2 max-h-20 object-contain pointer-events-none" />
+              <img src={firmaImage} alt="Firma" className="absolute bottom-4 left-1/2 -translate-x-1/2 max-h-20 object-contain pointer-events-none" />
               Timbro e Firma EasyEvent
            </div>
            <div className="border-t border-slate-300 pt-2 text-center text-xs text-slate-400">
@@ -262,7 +270,7 @@ export const QuotePreview: React.FC<QuotePreviewProps> = ({ data }) => {
                     PALCO REALIZZATO PER UNA TAPPA DEL TOUR DEI NEGRITA
                  </div>
             </div>
-            <img src="https://easyevent.it/wp-content/uploads/2025/11/banner.jpeg" alt="Banner" className="w-full h-auto object-contain" />
+            <img src={bannerImage} alt="Banner" className="w-full h-auto object-contain" />
             <div className="absolute bottom-4 left-0">
                  <div className="bg-brand-600 text-white px-4 py-2 text-xs font-bold uppercase tracking-widest shadow-lg rounded-r-lg">
                     Banner Minigonna PVC Omaggio
@@ -274,9 +282,9 @@ export const QuotePreview: React.FC<QuotePreviewProps> = ({ data }) => {
                 <h3 className="text-sm font-bold text-slate-500 uppercase tracking-widest mb-4">
                     ABBIAMO AVUTO L’ONORE ED IL PIACERE DI COLLABORARE CON:
                 </h3>
-                <div className="w-full border-t border-slate-100 pt-6">
-                  <img src="https://easyevent.it/wp-content/uploads/2025/11/portfolio-clienti.png" alt="Portfolio" className="w-full h-auto object-contain max-h-[180mm]" />
-                </div>
+                 <div className="w-full border-t border-slate-100 pt-6">
+                   <img src={portfolioImage} alt="Portfolio" className="w-full h-auto object-contain max-h-[180mm]" />
+                 </div>
             </div>
         </div>
         <CompanyFooter />
