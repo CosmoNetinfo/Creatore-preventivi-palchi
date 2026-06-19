@@ -42,11 +42,13 @@ export const ProductionSheet: React.FC<ProductionSheetProps> = ({ data }) => {
     
     // FORMULA SPONDE 2M (stessa logica già usata in DeliveryNote.tsx)
     let spondeLiscie2m = 0;
+    let spondeCerchio2m = 0;
     if (hasGuardrails) {
       paliMono = 6;
       paliStereo = Math.round((P / 2 - 1) + (L / 2 - 1) + (P / 2));
       const sponde2mCount = (P / 2) + (L / 2) + ((P / 2) - 1);
       spondeLiscie2m = Math.round(sponde2mCount);
+      spondeCerchio2m = Math.round(sponde2mCount);
     }
 
     if (hasHandrails) {
@@ -62,7 +64,8 @@ export const ProductionSheet: React.FC<ProductionSheetProps> = ({ data }) => {
       paliMono,
       paliStereo,
       paliMonoCorti,
-      spondeLiscie2m
+      spondeLiscie2m,
+      spondeCerchio2m
     };
   };
 
@@ -326,16 +329,26 @@ export const ProductionSheet: React.FC<ProductionSheetProps> = ({ data }) => {
                      </td>
                   </tr>
                 ))}
-                
-                {data.items.some(i => i.description.toLowerCase().includes("parapetti")) && (
+                                {data.items.some(i => i.description.toLowerCase().includes("parapetti")) && (
                   <>
                     <tr className="bg-emerald-50 border-b border-slate-400">
                         <td className="py-3 px-2 text-emerald-900 font-black text-sm uppercase">Sponde</td>
                         <td className="py-3 px-2 text-center text-slate-400 font-black text-xl">{structural?.spondeLiscie2m || 0}</td>
-                        <td className="py-3 px-2 text-slate-700 font-bold text-xs uppercase">Sponde 2m (Lisce/Cerchio)</td>
+                        <td className="py-3 px-2 text-slate-700 font-bold text-xs uppercase">Sponde Lisce 2m</td>
                         <td className="py-3 px-2 text-center text-slate-800 font-bold text-xs">40x40x2</td>
                         <td className="py-3 px-2 text-center text-slate-800 font-bold text-xs">195,7</td>
                         <td className="py-3 px-2 text-right text-slate-900 font-black text-xl">{structural?.spondeLiscie2m || 0}</td>
+                        <td className="py-3 px-2 text-center border-l border-slate-300">
+                           <div className="w-6 h-6 border-2 border-slate-400 rounded bg-white mx-auto"></div>
+                        </td>
+                     </tr>
+                     <tr className="bg-white border-b border-slate-400">
+                        <td className="py-3 px-2 text-emerald-900 font-black text-sm uppercase">Sponde</td>
+                        <td className="py-3 px-2 text-center text-slate-400 font-black text-xl">{structural?.spondeCerchio2m || 0}</td>
+                        <td className="py-3 px-2 text-slate-700 font-bold text-xs uppercase">Sponde Cerchio 2m</td>
+                        <td className="py-3 px-2 text-center text-slate-800 font-bold text-xs">40x40x2</td>
+                        <td className="py-3 px-2 text-center text-slate-800 font-bold text-xs">195,7</td>
+                        <td className="py-3 px-2 text-right text-slate-900 font-black text-xl">{structural?.spondeCerchio2m || 0}</td>
                         <td className="py-3 px-2 text-center border-l border-slate-300">
                            <div className="w-6 h-6 border-2 border-slate-400 rounded bg-white mx-auto"></div>
                         </td>
