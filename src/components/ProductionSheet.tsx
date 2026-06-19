@@ -333,8 +333,8 @@ export const ProductionSheet: React.FC<ProductionSheetProps> = ({ data }) => {
                         <td className="py-3 px-2 text-emerald-900 font-black text-sm uppercase">Sponde</td>
                         <td className="py-3 px-2 text-center text-slate-400 font-black text-xl">{structural?.spondeLiscie2m || 0}</td>
                         <td className="py-3 px-2 text-slate-700 font-bold text-xs uppercase">Sponde 2m (Lisce/Cerchio)</td>
-                        <td className="py-3 px-2 text-center text-slate-600 font-bold text-xs">-</td>
-                        <td className="py-3 px-2 text-center text-slate-600 font-bold text-xs">-</td>
+                        <td className="py-3 px-2 text-center text-slate-800 font-bold text-xs">40x40x2</td>
+                        <td className="py-3 px-2 text-center text-slate-800 font-bold text-xs">195,7</td>
                         <td className="py-3 px-2 text-right text-slate-900 font-black text-xl">{structural?.spondeLiscie2m || 0}</td>
                         <td className="py-3 px-2 text-center border-l border-slate-300">
                            <div className="w-6 h-6 border-2 border-slate-400 rounded bg-white mx-auto"></div>
