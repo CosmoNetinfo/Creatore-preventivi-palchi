@@ -57,6 +57,6 @@ jobs:
           tagName: v__VERSION__
           releaseName: 'EasyEvent v__VERSION__'
           releaseBody: 'EasyEvent Desktop Release'
-          releaseDraft: true
+          releaseDraft: false
           prerelease: false
           args: ${{ matrix.args }}

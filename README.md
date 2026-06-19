@@ -6,6 +6,15 @@ Applicazione desktop standalone (Windows + macOS) per la creazione di preventivi
 
 Sviluppata con **Tauri 2**, **React 19**, **TypeScript**, **Vite** e **SQLite**.
 
+## 📥 Download e Installazione
+
+Puoi scaricare l'applicazione pre-compilata per il tuo sistema operativo direttamente dalla pagina delle release del repository GitHub:
+
+👉 **[Scarica l'Ultima Versione (Windows / macOS)](https://github.com/CosmoNetinfo/Creatore-preventivi-palchi/releases)**
+
+* **Windows**: Scarica e installa il pacchetto `.msi` (o avvia `.exe`).
+* **macOS**: Scarica il file `.dmg`, aprilo e trascina l'app nella cartella Applicazioni.
+
 ---
 
 ## 🚀 Caratteristiche Principali
