@@ -1,6 +1,6 @@
 {
   "productName": "EasyEvent",
-  "version": "1.0.9",
+  "version": "1.1.0",
   "identifier": "com.easyevent.desktop",
   "build": {
     "beforeDevCommand": "npm run dev",
@@ -15,7 +15,8 @@
         "title": "EasyEvent - Gestione Preventivi",
         "width": 1280,
         "height": 800,
-        "visible": true
+        "visible": true,
+        "maximized": true
       }
     ],
     "security": {
