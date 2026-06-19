@@ -21,7 +21,6 @@ import {
   ArrowLeft, 
   Calendar,
   User,
-  Layers,
   TrendingUp
 } from 'lucide-react';
 import { DatabaseService } from './services/database';
@@ -182,8 +181,8 @@ const App: React.FC = () => {
       <aside className="w-64 bg-slate-900 text-slate-300 flex flex-col shrink-0 border-r border-slate-800 print:hidden">
         {/* Logo / Header */}
         <div className="p-6 border-b border-slate-800 flex items-center gap-3">
-          <div className="bg-brand-500 p-2 rounded-xl text-white">
-            <Layers className="h-6 w-6" />
+          <div className="p-1 rounded-xl bg-white flex items-center justify-center">
+            <img src="/brand/easyevent_icon.svg" alt="EasyEvent" className="h-8 w-8 object-contain" />
           </div>
           <div>
             <h1 className="font-black text-lg text-white leading-none tracking-tight">EasyEvent</h1>
