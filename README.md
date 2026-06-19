@@ -1,4 +1,4 @@
-# EasyEvent Desktop 🎪
+# EasyEvent Desktop
 
 ![EasyEvent Logo](public/brand/logo_completo.png)
 
