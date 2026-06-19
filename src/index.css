@@ -27,22 +27,33 @@
     print-color-adjust: exact !important;
   }
 
-  * {
+  /* Se stiamo usando l'helper robusto con la classe printing-active */
+  body.printing-active > :not(#print-temp-container) {
+    display: none !important;
+    visibility: hidden !important;
+  }
+
+  body.printing-active #print-temp-container {
+    display: block !important;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 210mm;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  body.printing-active #print-temp-container * {
+    visibility: visible !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
   }
 
-  /* Nasconde tutto di default */
-  body * {
-    visibility: hidden;
-  }
-
-  /* Rende visibile solo l'area stampabile e i suoi figli */
+  /* Fallback per il vecchio sistema basato su ID */
   #printable-root, #printable-root * {
     visibility: visible;
   }
 
-  /* Posiziona l'area stampabile in alto a sinistra assoluto */
   #printable-root {
     position: absolute;
     left: 0;
@@ -67,8 +78,8 @@
     page-break-after: auto !important;
   }
 
-  /* Nasconde elementi UI che potrebbero essere rimasti dentro l'area stampabile */
   .no-print {
     display: none !important;
   }
 }
+

@@ -2,6 +2,10 @@ import './index.css';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
+import { logger } from './services/debug';
+
+// Inizializza il logger di debug globale
+logger.init();
 
 const rootElement = document.getElementById('root');
 if (!rootElement) {

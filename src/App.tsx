@@ -24,9 +24,14 @@ import {
   Calendar,
   User,
   TrendingUp,
-  ArrowUpCircle
+  ArrowUpCircle,
+  Bug
 } from 'lucide-react';
 import { DatabaseService } from './services/database';
+import { DebugConsole } from './components/DebugConsole';
+import { printElement } from './services/printHelper';
+
+
 
 type ActiveSection = 'quotes' | 'checklists' | 'production' | 'warehouse';
 
@@ -93,6 +98,8 @@ const App: React.FC = () => {
 
   // Controllo aggiornamenti
   const [updateInfo, setUpdateInfo] = useState<{ available: boolean; version: string; url: string } | null>(null);
+  const [isDebugOpen, setIsDebugOpen] = useState(false);
+
 
   useEffect(() => {
     const checkForUpdates = async () => {
@@ -149,7 +156,14 @@ const App: React.FC = () => {
   };
 
   const handlePrint = () => {
-    window.print();
+    console.log("handlePrint: Avvio del processo di stampa/salvataggio PDF tramite printHelper...");
+    try {
+      printElement('printable-root');
+      console.log("handlePrint: printElement terminato correttamente.");
+    } catch (err: any) {
+      console.error("handlePrint: Errore durante l'esecuzione di printElement:", err);
+      alert(`Errore Stampa/PDF: ${err.message || err}\nConsulta la Console di Debug per i dettagli.`);
+    }
   };
 
   const calculateQuoteTotal = (data: QuoteData) => {
@@ -276,7 +290,16 @@ const App: React.FC = () => {
             <Box className="h-5 w-5" />
             <span>Magazzino</span>
           </button>
+
+          <button
+            onClick={() => setIsDebugOpen(true)}
+            className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-all text-slate-400 hover:bg-slate-800 hover:text-white border border-dashed border-slate-800 mt-2 hover:border-slate-700"
+          >
+            <Bug className="h-5 w-5 text-amber-500" />
+            <span>Console Debug</span>
+          </button>
         </nav>
+
 
         {/* Footer Sidebar */}
         <div className="mt-auto">
@@ -661,6 +684,8 @@ const App: React.FC = () => {
 
         </main>
       </div>
+
+      <DebugConsole isOpen={isDebugOpen} onClose={() => setIsDebugOpen(false)} />
     </div>
   );
 };
