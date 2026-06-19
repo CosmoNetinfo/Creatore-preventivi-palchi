@@ -1,3 +1,5 @@
+declare const __APP_VERSION__: string;
+
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { QuoteEditor } from './components/QuoteEditor';
 import { QuotePreview } from './components/QuotePreview';
@@ -21,7 +23,8 @@ import {
   ArrowLeft, 
   Calendar,
   User,
-  TrendingUp
+  TrendingUp,
+  ArrowUpCircle
 } from 'lucide-react';
 import { DatabaseService } from './services/database';
 
@@ -87,6 +90,42 @@ const App: React.FC = () => {
   const [savedQuotes, setSavedQuotes] = useState<QuoteRecord[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<'all' | 'draft' | 'sold'>('all');
+
+  // Controllo aggiornamenti
+  const [updateInfo, setUpdateInfo] = useState<{ available: boolean; version: string; url: string } | null>(null);
+
+  useEffect(() => {
+    const checkForUpdates = async () => {
+      try {
+        const res = await fetch('https://api.github.com/repos/CosmoNetinfo/Creatore-preventivi-palchi/releases/latest');
+        if (!res.ok) return;
+        const data = await res.json();
+        const latestTag: string = data.tag_name || '';
+        const latestVersion = latestTag.replace(/^v/, '');
+        const currentVersion = __APP_VERSION__;
+        if (latestVersion && latestVersion !== currentVersion) {
+          const [latMaj, latMin, latPat] = latestVersion.split('.').map(Number);
+          const [curMaj, curMin, curPat] = currentVersion.split('.').map(Number);
+          const isNewer =
+            latMaj > curMaj ||
+            (latMaj === curMaj && latMin > curMin) ||
+            (latMaj === curMaj && latMin === curMin && latPat > curPat);
+          if (isNewer) {
+            setUpdateInfo({
+              available: true,
+              version: latestVersion,
+              url: data.html_url || 'https://github.com/CosmoNetinfo/Creatore-preventivi-palchi/releases/latest'
+            });
+          }
+        }
+      } catch {
+        // Nessuna rete disponibile — non mostrare nulla
+      }
+    };
+    // Controllo al primo avvio dopo 3 secondi (non blocca il caricamento UI)
+    const t = setTimeout(checkForUpdates, 3000);
+    return () => clearTimeout(t);
+  }, []);
 
   // Stati di navigazione interna
   const [isEditing, setIsEditing] = useState(false);
@@ -181,9 +220,7 @@ const App: React.FC = () => {
       <aside className="w-64 bg-slate-900 text-slate-300 flex flex-col shrink-0 border-r border-slate-800 print:hidden">
         {/* Logo / Header */}
         <div className="p-6 border-b border-slate-800 flex items-center gap-3">
-          <div className="p-1 rounded-xl bg-white flex items-center justify-center">
-            <img src="/favicon-512.png" alt="EasyEvent" className="h-8 w-8 object-contain" />
-          </div>
+          <img src="/favicon-512.png" alt="EasyEvent" className="h-10 w-10 object-contain rounded-xl" />
           <div>
             <h1 className="font-black text-lg text-white leading-none tracking-tight">EasyEvent</h1>
             <span className="text-[9px] uppercase tracking-wider text-slate-400 font-bold">Gestione Desktop</span>
@@ -242,8 +279,25 @@ const App: React.FC = () => {
         </nav>
 
         {/* Footer Sidebar */}
-        <div className="p-4 border-t border-slate-800 text-center text-[10px] text-slate-500 font-bold">
-          EasyEvent S.r.l.s. v1.0.2
+        <div className="mt-auto">
+          {/* Banner aggiornamento disponibile */}
+          {updateInfo?.available && (
+            <a
+              href={updateInfo.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mx-3 mb-2 flex items-center gap-2 bg-brand-600 hover:bg-brand-500 transition-colors rounded-xl p-3 cursor-pointer no-underline"
+            >
+              <ArrowUpCircle className="h-5 w-5 text-white shrink-0" />
+              <div>
+                <p className="text-white font-black text-[11px] uppercase tracking-wide leading-none">Aggiornamento disponibile</p>
+                <p className="text-brand-100 text-[10px] mt-0.5">Versione {updateInfo.version} → Scarica</p>
+              </div>
+            </a>
+          )}
+          <div className="p-4 border-t border-slate-800 text-center text-[10px] text-slate-500 font-bold">
+            EasyEvent S.r.l.s. v{__APP_VERSION__}
+          </div>
         </div>
       </aside>
 
