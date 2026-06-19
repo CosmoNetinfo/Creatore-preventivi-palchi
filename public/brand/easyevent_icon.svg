@@ -1,0 +1,42 @@
+<svg viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="orangeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ff8c2e"/>
+      <stop offset="100%" stop-color="#e8650f"/>
+    </linearGradient>
+  </defs>
+
+  <!-- sfondo quadrato arrotondato blu scuro -->
+  <rect x="0" y="0" width="220" height="220" rx="28" fill="#0f2238"/>
+
+  <g transform="translate(28, 22)">
+    <!-- piano del palco -->
+    <polygon points="6,52 158,52 172,38 20,38" fill="url(#orangeGrad)"/>
+    <polygon points="6,52 158,52 158,61 6,61" fill="#c2540a"/>
+
+    <!-- gambe -->
+    <rect x="10" y="57" width="10" height="110" fill="#3a5a82"/>
+    <rect x="144" y="57" width="10" height="110" fill="#3a5a82"/>
+
+    <!-- traliccio -->
+    <g stroke="#3a5a82" stroke-width="8" stroke-linecap="round" fill="none">
+      <line x1="19" y1="59" x2="149" y2="111"/>
+      <line x1="19" y1="111" x2="149" y2="59"/>
+      <line x1="19" y1="111" x2="149" y2="163"/>
+      <line x1="19" y1="163" x2="149" y2="111"/>
+    </g>
+    <rect x="19" y="107" width="130" height="7" rx="2" fill="#27486e"/>
+
+    <!-- nodi -->
+    <circle cx="19" cy="59" r="8" fill="url(#orangeGrad)"/>
+    <circle cx="149" cy="59" r="8" fill="url(#orangeGrad)"/>
+    <circle cx="19" cy="111" r="8" fill="url(#orangeGrad)"/>
+    <circle cx="149" cy="111" r="8" fill="url(#orangeGrad)"/>
+    <circle cx="19" cy="163" r="8" fill="url(#orangeGrad)"/>
+    <circle cx="149" cy="163" r="8" fill="url(#orangeGrad)"/>
+
+    <!-- piedini -->
+    <rect x="2" y="167" width="28" height="8" rx="2" fill="#070f1a"/>
+    <rect x="138" y="167" width="28" height="8" rx="2" fill="#070f1a"/>
+  </g>
+</svg>

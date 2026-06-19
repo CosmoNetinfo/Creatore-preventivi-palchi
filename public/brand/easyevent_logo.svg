@@ -1,0 +1,61 @@
+<svg viewBox="0 0 800 260" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="steelGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1e3a5f"/>
+      <stop offset="100%" stop-color="#0f2238"/>
+    </linearGradient>
+    <linearGradient id="orangeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ff8c2e"/>
+      <stop offset="100%" stop-color="#e8650f"/>
+    </linearGradient>
+  </defs>
+
+  <!-- ICONA: palco visto leggermente in prospettiva, piano superiore + traliccio sotto -->
+  <g transform="translate(35, 35)">
+    <!-- ombra a terra -->
+    <ellipse cx="95" cy="196" rx="100" ry="8" fill="#0f2238" opacity="0.12"/>
+
+    <!-- piano del palco (pedana), in leggera prospettiva -->
+    <polygon points="10,58 180,58 196,42 26,42" fill="url(#orangeGrad)"/>
+    <polygon points="10,58 180,58 180,68 10,68" fill="#c2540a"/>
+
+    <!-- gambe verticali (4 tubi), leggermente divaricate per dare solidità -->
+    <rect x="14" y="64" width="11" height="124" fill="#1e3a5f"/>
+    <rect x="165" y="64" width="11" height="124" fill="#1e3a5f"/>
+
+    <!-- traliccio a croci (cross-bracing), asimmetrico per dinamismo -->
+    <g stroke="#1e3a5f" stroke-width="9" stroke-linecap="round" fill="none">
+      <line x1="24" y1="66" x2="170" y2="124"/>
+      <line x1="24" y1="124" x2="170" y2="66"/>
+      <line x1="24" y1="124" x2="170" y2="182"/>
+      <line x1="24" y1="182" x2="170" y2="124"/>
+    </g>
+
+    <!-- traversa orizzontale centrale -->
+    <rect x="24" y="120" width="148" height="8" rx="2" fill="#15314f"/>
+
+    <!-- nodi/giunti in arancione: punto focale, energia -->
+    <circle cx="24" cy="66" r="8.5" fill="url(#orangeGrad)"/>
+    <circle cx="170" cy="66" r="8.5" fill="url(#orangeGrad)"/>
+    <circle cx="24" cy="124" r="8.5" fill="url(#orangeGrad)"/>
+    <circle cx="170" cy="124" r="8.5" fill="url(#orangeGrad)"/>
+    <circle cx="24" cy="182" r="8.5" fill="url(#orangeGrad)"/>
+    <circle cx="170" cy="182" r="8.5" fill="url(#orangeGrad)"/>
+
+    <!-- piedini regolabili a terra -->
+    <rect x="6" y="188" width="32" height="9" rx="2" fill="#0f2238"/>
+    <rect x="157" y="188" width="32" height="9" rx="2" fill="#0f2238"/>
+  </g>
+
+  <!-- WORDMARK -->
+  <g transform="translate(260, 95)">
+    <text x="0" y="0" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="58" letter-spacing="-0.5">
+      <tspan fill="#0f2238">EASY</tspan><tspan fill="url(#orangeGrad)" dx="6">EVENT</tspan>
+    </text>
+
+    <!-- linea separatrice industriale -->
+    <rect x="2" y="18" width="392" height="4" fill="#1e3a5f"/>
+
+    <text x="2" y="48" font-family="Arial, sans-serif" font-weight="600" font-size="20" letter-spacing="3" fill="#1e3a5f">NOLEGGIO PALCHI &amp; STRUTTURE</text>
+  </g>
+</svg>

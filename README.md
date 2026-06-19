@@ -1,6 +1,6 @@
 # EasyEvent Desktop 🎪
 
-![EasyEvent Logo](public/logo_completo.png)
+![EasyEvent Logo](public/brand/logo_completo.png)
 
 Applicazione desktop standalone (Windows + macOS) per la creazione di preventivi, checklist di carico, schede di produzione e tracciamento automatico del magazzino per palchi modulari da noleggio (EasyEvent S.r.l.s.).
 
@@ -97,3 +97,26 @@ L'applicazione è configurata per generare le build di rilascio Windows e macOS 
    ```
 2. GitHub Actions rileverà il tag ed eseguirà la pipeline (`release.yml`), compilando l'app sia su runner Windows che macOS.
 3. Al termine della compilazione, gli installer (`.msi` / `.exe` e `.dmg`) verranno allegati come **Bozza di Rilascio (Draft Release)** sulla pagina GitHub del tuo repository, pronti per essere distribuiti.
+
+---
+
+## 🎨 Risorse Grafiche (Branding)
+
+I loghi e le icone ufficiali dell'applicazione sono memorizzati all'interno della cartella `public/brand/` per l'uso nel build template e la documentazione:
+
+* **Logo Completo (PNG)**
+  
+  ![Logo Completo](public/brand/logo_completo.png)
+
+* **Logo Vettoriale (SVG)**
+  
+  ![Logo SVG](public/brand/easyevent_logo.svg)
+
+* **Icona App 512px (PNG)**
+  
+  ![Icona App](public/brand/icona_app_512px.png)
+
+* **Icona Vettoriale (SVG)**
+  
+  ![Icona SVG](public/brand/easyevent_icon.svg)
+
