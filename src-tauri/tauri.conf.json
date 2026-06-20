@@ -1,6 +1,6 @@
 {
   "productName": "EasyEvent",
-  "version": "1.2.5",
+  "version": "1.2.6",
   "identifier": "com.easyevent.desktop",
   "build": {
     "beforeDevCommand": "npm run dev",

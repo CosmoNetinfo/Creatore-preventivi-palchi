@@ -270,9 +270,9 @@ export const DeliveryNote: React.FC<DeliveryNoteProps> = ({ data }) => {
                       <div className="w-4 h-4 border-2 border-slate-400 rounded flex items-center justify-center bg-white"><div className="w-1.5 h-1.5 rounded-full bg-slate-100" /></div>
                       <span className="text-[8.5px] font-bold text-slate-800 uppercase">Bulloncini M8x16</span>
                    </div>
-                   <div className="text-right flex items-center gap-2">
-                      <span className="text-[8px] font-bold text-slate-400 uppercase">({structural.weightRounded}g)</span>
-                      <span className="text-base font-black text-slate-900">{structural.bulloneriaCount}</span>
+                   <div className="text-right">
+                      <div className="text-sm font-black text-emerald-600">{structural.bulloneriaCount}</div>
+                      <div className="text-[8px] font-bold text-slate-450 uppercase leading-none mt-0.5">Peso: {structural.weightRounded}g</div>
                    </div>
                 </div>
 
@@ -282,9 +282,9 @@ export const DeliveryNote: React.FC<DeliveryNoteProps> = ({ data }) => {
                         <div className="w-4 h-4 border-2 border-emerald-400 rounded flex items-center justify-center bg-white"><div className="w-1.5 h-1.5 rounded-full bg-emerald-100" /></div>
                         <span className="text-[8.5px] font-bold text-slate-800 uppercase">Bulloncini M8x35 (Sist. Spin)</span>
                      </div>
-                     <div className="text-right flex items-center gap-2">
-                        <span className="text-[8px] font-bold text-slate-400 uppercase">({structural.bulloneria35.weight}g)</span>
-                        <span className="text-base font-black text-emerald-700">{structural.bulloneria35.count}</span>
+                     <div className="text-right">
+                        <div className="text-sm font-black text-emerald-600">{structural.bulloneria35.count}</div>
+                        <div className="text-[8px] font-bold text-slate-450 uppercase leading-none mt-0.5">Peso: {structural.bulloneria35.weight}g</div>
                      </div>
                    </div>
                 )}
