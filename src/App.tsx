@@ -180,12 +180,32 @@ const App: React.FC = () => {
 
   const handlePrint = () => {
     console.log("handlePrint: Avvio del processo di stampa/salvataggio PDF tramite printHelper...");
+    const originalTitle = document.title;
     try {
+      let docTitle = "EasyEvent - Generatore Preventivi";
+      const sanitize = (val: string) => val.replace(/[\/\\?%*:|"<>\x00-\x1F]/g, '_').trim();
+      
+      if (activeSection === 'quotes' && isEditing) {
+        const clientName = quoteData.client.companyName || quoteData.client.contactName || "";
+        docTitle = `Preventivo_${quoteData.number}${clientName ? `_${clientName}` : ''}`;
+      } else if (activeSection === 'checklists' && selectedQuoteForChecklist) {
+        const clientName = selectedQuoteForChecklist.client.companyName || selectedQuoteForChecklist.client.contactName || "";
+        docTitle = `Checklist_Carico_${selectedQuoteForChecklist.number}${clientName ? `_${clientName}` : ''}`;
+      } else if (activeSection === 'production' && selectedQuoteForProduction) {
+        const clientName = selectedQuoteForProduction.client.companyName || selectedQuoteForProduction.client.contactName || "";
+        docTitle = `Scheda_Produzione_${selectedQuoteForProduction.number}${clientName ? `_${clientName}` : ''}`;
+      }
+      
+      document.title = sanitize(docTitle);
       printElement('printable-root');
       console.log("handlePrint: printElement terminato correttamente.");
     } catch (err: any) {
       console.error("handlePrint: Errore durante l'esecuzione di printElement:", err);
       alert(`Errore Stampa/PDF: ${err.message || err}\nConsulta la Console di Debug per i dettagli.`);
+    } finally {
+      setTimeout(() => {
+        document.title = originalTitle;
+      }, 1000);
     }
   };
 
