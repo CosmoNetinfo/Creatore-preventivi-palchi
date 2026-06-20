@@ -1,6 +1,6 @@
 [package]
 name = "easyevent-desktop"
-version = "1.2.9"
+version = "1.2.10"
 description = "EasyEvent Desktop Quote Management"
 authors = ["EasyEvent"]
 edition = "2021"
