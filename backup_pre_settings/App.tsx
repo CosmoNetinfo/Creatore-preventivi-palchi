@@ -25,20 +25,15 @@ import {
   User,
   TrendingUp,
   ArrowUpCircle,
-  Bug,
-  Settings
+  Bug
 } from 'lucide-react';
 import { DatabaseService } from './services/database';
 import { DebugConsole } from './components/DebugConsole';
 import { printElement } from './services/printHelper';
-import { SettingsPanel, loadSettings, AppSettings } from './components/SettingsPanel';
-import { check } from '@tauri-apps/plugin-updater';
-import { relaunch } from '@tauri-apps/plugin-process';
 
 
 
-
-type ActiveSection = 'quotes' | 'checklists' | 'production' | 'warehouse' | 'settings';
+type ActiveSection = 'quotes' | 'checklists' | 'production' | 'warehouse';
 
 // Contenitore ad autoscala per anteprima A4
 const PreviewContainer: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -104,24 +99,6 @@ const App: React.FC = () => {
   // Controllo aggiornamenti
   const [updateInfo, setUpdateInfo] = useState<{ available: boolean; version: string; url: string } | null>(null);
   const [isDebugOpen, setIsDebugOpen] = useState(false);
-  const [appSettings, setAppSettings] = useState<AppSettings>(loadSettings());
-  const [updateStatus, setUpdateStatus] = useState<'idle' | 'checking' | 'downloading' | 'ready' | 'error'>('idle');
-  const [downloadProgress, setDownloadProgress] = useState(0);
-
-  // Applica impostazioni globali all'avvio
-  useEffect(() => {
-    // 1. Dark Mode
-    if (appSettings.darkMode) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-
-    // 2. Grandezza font
-    document.documentElement.classList.remove('font-size-normal', 'font-size-compact', 'font-size-tiny');
-    document.documentElement.classList.add(`font-size-${appSettings.fontSize}`);
-  }, [appSettings.darkMode, appSettings.fontSize]);
-
 
 
   useEffect(() => {
@@ -189,54 +166,6 @@ const App: React.FC = () => {
     }
   };
 
-  // Esegue l'aggiornamento automatico nativo di Tauri
-  const handleNativeUpdate = async () => {
-    try {
-      setUpdateStatus('checking');
-      console.log("Auto-Updater: Avvio controllo aggiornamenti nativo...");
-      const update = await check();
-      
-      if (update) {
-        console.log(`Auto-Updater: Trovata versione ${update.version}. Avvio download...`);
-        setUpdateStatus('downloading');
-        let downloaded = 0;
-        let total = 0;
-
-        await update.downloadAndInstall((event) => {
-          switch (event.event) {
-            case 'Started':
-              total = event.data.contentLength || 0;
-              console.log(`Auto-Updater: Inizio download. Dimensione totale: ${total} byte`);
-              break;
-            case 'Progress':
-              downloaded += event.data.chunkLength;
-              if (total > 0) {
-                const percent = Math.round((downloaded / total) * 100);
-                setDownloadProgress(percent);
-              }
-              break;
-            case 'Finished':
-              console.log('Auto-Updater: Download completato, installazione in corso...');
-              break;
-          }
-        });
-
-        console.log("Auto-Updater: Installazione completata. Riavvio...");
-        setUpdateStatus('ready');
-        alert("Aggiornamento completato con successo! L'applicazione verrà riavviata.");
-        await relaunch();
-      } else {
-        console.log("Auto-Updater: Nessun aggiornamento nativo disponibile.");
-        setUpdateStatus('idle');
-      }
-    } catch (err: any) {
-      console.error("Auto-Updater: Errore durante l'aggiornamento nativo:", err);
-      setUpdateStatus('error');
-      alert(`Errore durante l'aggiornamento: ${err.message || err}`);
-    }
-  };
-
-
   const calculateQuoteTotal = (data: QuoteData) => {
     const subtotal = data.items.reduce((sum, item) => sum + (item.unitPrice * item.quantity), 0);
     const discount = subtotal * (data.discountPercentage / 100);
@@ -272,25 +201,10 @@ const App: React.FC = () => {
     setQuoteData({
       ...INITIAL_QUOTE,
       number: nextNum,
-      date: new Date().toISOString().split('T')[0],
-      discountPercentage: appSettings.defaultDiscount,
-      notes: appSettings.defaultNotes,
-      company: {
-        ...INITIAL_QUOTE.company,
-        name: appSettings.companyName,
-        vatId: appSettings.companyVatId,
-        address: appSettings.companyAddress,
-        email: appSettings.companyEmail,
-        phone: appSettings.companyPhone,
-        website: appSettings.companyWebsite,
-        bankName: appSettings.companyBank,
-        iban: appSettings.companyIban,
-        logoUrl: appSettings.companyLogo
-      }
+      date: new Date().toISOString().split('T')[0]
     });
     setIsEditing(true);
   };
-
 
   const filteredQuotes = useMemo(() => {
     let result = savedQuotes;
@@ -314,10 +228,10 @@ const App: React.FC = () => {
   }, [searchQuery, statusFilter, savedQuotes]);
 
   return (
-    <div className="h-screen w-screen bg-slate-50 dark:bg-slate-950 flex font-sans overflow-hidden">
+    <div className="min-h-screen bg-slate-50 flex font-sans">
       
       {/* SIDEBAR SINISTRA */}
-      <aside className="w-64 h-full bg-slate-900 text-slate-300 flex flex-col shrink-0 border-r border-slate-800 print:hidden select-none">
+      <aside className="w-64 bg-slate-900 text-slate-300 flex flex-col shrink-0 border-r border-slate-800 print:hidden">
         {/* Logo / Header */}
         <div className="p-6 border-b border-slate-800 flex items-center gap-3">
           <img src="/favicon-512.png" alt="EasyEvent" className="h-10 w-10 object-contain rounded-xl" />
@@ -378,20 +292,8 @@ const App: React.FC = () => {
           </button>
 
           <button
-            onClick={() => { setActiveSection('settings'); }}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-all ${
-              activeSection === 'settings' 
-                ? 'bg-purple-600 text-white shadow-lg shadow-purple-600/20' 
-                : 'hover:bg-slate-800 hover:text-white'
-            }`}
-          >
-            <Settings className="h-5 w-5" />
-            <span>Impostazioni</span>
-          </button>
-
-          <button
             onClick={() => setIsDebugOpen(true)}
-            className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-all text-slate-400 hover:bg-slate-850 hover:text-white border border-dashed border-slate-800 mt-4 hover:border-slate-700"
+            className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-all text-slate-400 hover:bg-slate-800 hover:text-white border border-dashed border-slate-800 mt-2 hover:border-slate-700"
           >
             <Bug className="h-5 w-5 text-amber-500" />
             <span>Console Debug</span>
@@ -399,32 +301,23 @@ const App: React.FC = () => {
         </nav>
 
 
-
         {/* Footer Sidebar */}
         <div className="mt-auto">
           {/* Banner aggiornamento disponibile */}
           {updateInfo?.available && (
-            <button
-              onClick={handleNativeUpdate}
-              disabled={updateStatus === 'checking' || updateStatus === 'downloading' || updateStatus === 'ready'}
-              className="mx-3 mb-2 w-[calc(100%-24px)] flex items-center gap-2 bg-brand-600 hover:bg-brand-500 transition-colors rounded-xl p-3 cursor-pointer text-left border-0 outline-none"
+            <a
+              href={updateInfo.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mx-3 mb-2 flex items-center gap-2 bg-brand-600 hover:bg-brand-500 transition-colors rounded-xl p-3 cursor-pointer no-underline"
             >
               <ArrowUpCircle className="h-5 w-5 text-white shrink-0" />
               <div>
-                <p className="text-white font-black text-[11px] uppercase tracking-wide leading-none">
-                  {updateStatus === 'idle' && 'Aggiornamento disponibile'}
-                  {updateStatus === 'checking' && 'Verifica in corso...'}
-                  {updateStatus === 'downloading' && `Download in corso... ${downloadProgress}%`}
-                  {updateStatus === 'ready' && 'Installazione completata'}
-                  {updateStatus === 'error' && 'Errore. Riprova'}
-                </p>
-                <p className="text-brand-100 text-[10px] mt-0.5">
-                  {updateStatus === 'downloading' ? 'Attendere...' : `Versione ${updateInfo.version} → Clicca qui`}
-                </p>
+                <p className="text-white font-black text-[11px] uppercase tracking-wide leading-none">Aggiornamento disponibile</p>
+                <p className="text-brand-100 text-[10px] mt-0.5">Versione {updateInfo.version} → Scarica</p>
               </div>
-            </button>
+            </a>
           )}
-
           <div className="p-4 border-t border-slate-800 text-center text-[10px] text-slate-500 font-bold">
             EasyEvent S.r.l.s. v{__APP_VERSION__}
           </div>
@@ -432,20 +325,18 @@ const App: React.FC = () => {
       </aside>
 
       {/* CONTENUTO PRINCIPALE */}
-      <div className="flex-1 h-full flex flex-col min-w-0 overflow-hidden">
+      <div className="flex-1 flex flex-col min-w-0">
         
         {/* BARRA SUPERIORE */}
-        <header className="h-16 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-8 print:hidden shrink-0 select-none">
+        <header className="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-8 print:hidden shrink-0">
           <div className="flex items-center gap-2">
-            <span className="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">
+            <span className="text-xs font-black text-slate-400 uppercase tracking-widest">
               {activeSection === 'quotes' && (isEditing ? 'Preventivi / Modifica' : 'Sezione Preventivi')}
               {activeSection === 'checklists' && (selectedQuoteForChecklist ? 'Checklist / Visualizzazione' : 'Sezione Checklist Carico')}
               {activeSection === 'production' && (selectedQuoteForProduction ? 'Produzione / Visualizzazione' : 'Sezione Schede Produzione')}
               {activeSection === 'warehouse' && 'Gestione Magazzino'}
-              {activeSection === 'settings' && 'Impostazioni dell\'applicazione'}
             </span>
           </div>
-
 
           <div className="flex items-center gap-4">
             {/* Bottone Stampa visibile solo nelle anteprime dei documenti */}
@@ -454,9 +345,9 @@ const App: React.FC = () => {
               (activeSection === 'production' && selectedQuoteForProduction)) && (
               <button
                 onClick={handlePrint}
-                className="inline-flex items-center gap-2 px-4 py-2 border border-slate-200 dark:border-slate-800 text-xs font-black uppercase tracking-wider rounded-xl hover:bg-slate-50 dark:hover:bg-slate-850 dark:text-white transition-colors"
+                className="inline-flex items-center gap-2 px-4 py-2 border border-slate-200 text-xs font-black uppercase tracking-wider rounded-xl hover:bg-slate-50 transition-colors"
               >
-                <Printer className="h-4 w-4 text-slate-500 dark:text-slate-400" />
+                <Printer className="h-4 w-4 text-slate-500" />
                 Stampa / Esporta PDF
               </button>
             )}
@@ -464,24 +355,24 @@ const App: React.FC = () => {
         </header>
 
         {/* PAGINE DI DETTAGLIO */}
-        <main className="flex-1 overflow-y-auto p-8 bg-slate-50 dark:bg-slate-950 print:p-0 print:overflow-visible">
+        <main className="flex-1 overflow-y-auto p-8 print:p-0 print:overflow-visible">
           
           {/* SECTION: PREVENTIVI */}
           {activeSection === 'quotes' && (
             isEditing ? (
               <div className="space-y-6">
                 {/* Header editor */}
-                <div className="flex justify-between items-center bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm print:hidden">
+                <div className="flex justify-between items-center bg-white p-4 rounded-2xl border border-slate-200 shadow-sm print:hidden">
                   <button 
                     onClick={() => { setIsEditing(false); loadArchive(); }} 
-                    className="inline-flex items-center gap-2 text-xs font-bold text-slate-600 dark:text-slate-350 hover:text-slate-900 dark:hover:text-white bg-slate-100 dark:bg-slate-800 px-4 py-2 rounded-xl transition-all"
+                    className="inline-flex items-center gap-2 text-xs font-bold text-slate-600 hover:text-slate-900 bg-slate-100 px-4 py-2 rounded-xl transition-all"
                   >
                     <ArrowLeft className="w-4 h-4" /> Torna all'elenco dei preventivi
                   </button>
                   <div className="text-right">
                     <span className="text-xs text-slate-400 font-bold block">Stato Attuale</span>
                     <span className={`inline-block text-[10px] px-2 py-0.5 rounded-full font-black uppercase tracking-wider ${
-                      quoteData.status === 'sold' ? 'bg-green-100 text-green-700 dark:bg-green-950/30 dark:text-green-400' : 'bg-blue-100 text-blue-700 dark:bg-blue-950/30 dark:text-blue-400'
+                      quoteData.status === 'sold' ? 'bg-green-100 text-green-700' : 'bg-blue-100 text-blue-700'
                     }`}>
                       {quoteData.status === 'sold' ? 'VENDUTO (Stock scaricato)' : 'BOZZA (In attesa)'}
                     </span>
@@ -495,7 +386,7 @@ const App: React.FC = () => {
                   </div>
                   <div className="w-full xl:w-2/3 flex flex-col">
                     <PreviewContainer>
-                      <div id="printable-root" className={`relative ${!appSettings.printShowPrices ? 'print-hide-prices' : ''}`}>
+                      <div id="printable-root" className="relative">
                         <QuotePreview data={quoteData} />
                       </div>
                     </PreviewContainer>
@@ -784,23 +675,13 @@ const App: React.FC = () => {
           {activeSection === 'warehouse' && (
             <div className="space-y-6">
               <div>
-                <h2 className="text-2xl font-black text-slate-900 dark:text-white">Magazzino</h2>
-                <p className="text-sm text-slate-500 dark:text-slate-400">Traccia le scorte degli elementi fisici, imposta soglie critiche e regola le disponibilità.</p>
+                <h2 className="text-2xl font-black text-slate-900">Magazzino</h2>
+                <p className="text-sm text-slate-500">Traccia le scorte degli elementi fisici, imposta soglie critiche e regola le disponibilità.</p>
               </div>
               <Warehouse />
             </div>
           )}
 
-          {/* SECTION: SETTINGS */}
-          {activeSection === 'settings' && (
-            <div className="space-y-6 max-w-4xl pb-12">
-              <div>
-                <h2 className="text-2xl font-black text-slate-900 dark:text-white font-sans">Impostazioni Globali</h2>
-                <p className="text-sm text-slate-500 dark:text-slate-400">Configura i dati predefiniti dei tuoi documenti, il layout di stampa, la grandezza caratteri e il tema visivo.</p>
-              </div>
-              <SettingsPanel onSave={setAppSettings} />
-            </div>
-          )}
         </main>
       </div>
 

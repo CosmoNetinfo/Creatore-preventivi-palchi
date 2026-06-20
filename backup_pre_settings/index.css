@@ -83,30 +83,3 @@
   }
 }
 
-/* Classi di scaling font a livello root (funziona con rem di Tailwind) */
-html.font-size-compact {
-  font-size: 14px !important; /* riduce di circa il 12.5% */
-}
-html.font-size-tiny {
-  font-size: 12px !important; /* riduce di circa il 25% */
-}
-
-/* Ottimizzazione salti pagina per elementi tabelle e card */
-@media print {
-  tr, .break-inside-avoid {
-    page-break-inside: avoid !important;
-    break-inside: avoid !important;
-  }
-}
-
-/* Regola per nascondere i prezzi durante la stampa */
-@media print {
-  .print-hide-prices .print-price-col,
-  .print-hide-prices .print-price-value,
-  .print-hide-prices .print-total-row {
-    display: none !important;
-    visibility: hidden !important;
-  }
-}
-
-

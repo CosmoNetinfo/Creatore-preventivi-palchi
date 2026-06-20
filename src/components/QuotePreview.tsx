@@ -1,6 +1,8 @@
 
 import React, { useMemo } from 'react';
 import { QuoteData } from '../types';
+import { loadSettings } from './SettingsPanel';
+
 
 interface QuotePreviewProps {
   data: QuoteData;
@@ -173,8 +175,12 @@ export const QuotePreview: React.FC<QuotePreviewProps> = ({ data }) => {
                 <th className="py-1.5 px-4 text-left font-semibold w-[35%] rounded-tl-lg whitespace-nowrap">Descrizione</th>
                 <th className="py-1.5 px-4 text-left font-semibold w-[25%] whitespace-nowrap">Specs</th>
                 <th className="py-1.5 px-4 text-center font-semibold whitespace-nowrap">Q.tà</th>
-                <th className="py-1.5 px-4 text-right font-semibold whitespace-nowrap">Prezzo Unit.</th>
-                <th className="py-1.5 px-4 text-right font-semibold rounded-tr-lg whitespace-nowrap">Totale</th>
+                {loadSettings().printShowPrices && (
+                  <>
+                    <th className="py-1.5 px-4 text-right font-semibold whitespace-nowrap">Prezzo Unit.</th>
+                    <th className="py-1.5 px-4 text-right font-semibold rounded-tr-lg whitespace-nowrap">Totale</th>
+                  </>
+                )}
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
@@ -185,17 +191,21 @@ export const QuotePreview: React.FC<QuotePreviewProps> = ({ data }) => {
                   <td className="py-1.5 px-4 text-center text-slate-600 align-top whitespace-nowrap">
                     {item.quantity} <span className="text-xs text-slate-400 font-normal">{getUnit(item.description)}</span>
                   </td>
-                  <td className="py-1.5 px-4 text-right text-slate-600 align-top whitespace-nowrap">{formatCurrency(item.unitPrice)}</td>
-                  <td className="py-1.5 px-4 text-right text-slate-800 font-semibold align-top whitespace-nowrap">
-                    {formatCurrency(item.quantity * item.unitPrice)}
-                  </td>
+                  {loadSettings().printShowPrices && (
+                    <>
+                      <td className="py-1.5 px-4 text-right text-slate-600 align-top whitespace-nowrap">{formatCurrency(item.unitPrice)}</td>
+                      <td className="py-1.5 px-4 text-right text-slate-800 font-semibold align-top whitespace-nowrap">
+                        {formatCurrency(item.quantity * item.unitPrice)}
+                      </td>
+                    </>
+                  )}
                 </tr>
               ))}
             </tbody>
           </table>
 
           <div className="flex flex-row gap-8 mb-4 items-start">
-            <div className="w-1/2 space-y-4">
+            <div className={`${loadSettings().printShowPrices ? 'w-1/2' : 'w-full'} space-y-4`}>
                 <div className="bg-slate-50 p-4 rounded-lg border border-slate-200 text-xs">
                     <h4 className="font-bold text-slate-700 mb-2 uppercase">Dati Bancari</h4>
                     <p><span className="font-semibold text-slate-500">Banca:</span> {data.company.bankName}</p>
@@ -205,55 +215,61 @@ export const QuotePreview: React.FC<QuotePreviewProps> = ({ data }) => {
                     <p className="whitespace-pre-wrap mb-2">{data.notes}</p>
                     <p className="font-medium text-slate-700">Offerta valida fino al: {formatDate(data.validUntil)}</p>
                 </div>
-                <div className="border-t border-slate-200 pt-2 text-xs text-slate-500 space-y-1">
-                    <div className="flex justify-between">
-                        <span>Trasporto ({data.isIslands ? 'Isole' : 'Standard'}):</span>
-                        <span className="font-semibold">{formatCurrency(transportCost)}</span>
-                    </div>
-                    <div className="flex justify-between">
-                        <span>Imballaggio (3%):</span>
-                        <span className="font-semibold">{formatCurrency(packagingCost)}</span>
-                    </div>
-                </div>
+                {loadSettings().printShowPrices && (
+                  <div className="border-t border-slate-200 pt-2 text-xs text-slate-500 space-y-1">
+                      <div className="flex justify-between">
+                          <span>Trasporto ({data.isIslands ? 'Isole' : 'Standard'}):</span>
+                          <span className="font-semibold">{formatCurrency(transportCost)}</span>
+                      </div>
+                      <div className="flex justify-between">
+                          <span>Imballaggio (3%):</span>
+                          <span className="font-semibold">{formatCurrency(packagingCost)}</span>
+                      </div>
+                  </div>
+                )}
             </div>
 
-            <div className="w-1/2 bg-slate-50 p-6 rounded-lg border border-slate-100 relative">
-              <div className="flex justify-between text-base font-bold text-slate-800 mb-4">
-                <span>Totale Imponibile</span>
-                <span>{formatCurrency(totals.subtotal)}</span>
-              </div>
-              <div className="space-y-2 pt-2 border-t border-slate-200 border-dashed">
-                <div className="flex justify-between text-sm text-slate-600">
-                  <span>Sconto ({data.discountPercentage}%)</span>
-                  <span className="font-medium text-slate-700">{formatCurrency(totals.discountedAmount)}</span>
+            {loadSettings().printShowPrices && (
+              <div className="w-1/2 bg-slate-50 p-6 rounded-lg border border-slate-100 relative">
+                <div className="flex justify-between text-base font-bold text-slate-800 mb-4">
+                  <span>Totale Imponibile</span>
+                  <span>{formatCurrency(totals.subtotal)}</span>
                 </div>
-                <div className="flex justify-between text-sm text-slate-600">
-                  <span>Arrotondamento</span>
-                  <span className="font-medium text-slate-700">{formatCurrency(totals.roundedAmount)}</span>
+                <div className="space-y-2 pt-2 border-t border-slate-200 border-dashed">
+                  <div className="flex justify-between text-sm text-slate-600">
+                    <span>Sconto ({data.discountPercentage}%)</span>
+                    <span className="font-medium text-slate-700">{formatCurrency(totals.discountedAmount)}</span>
+                  </div>
+                  <div className="flex justify-between text-sm text-slate-600">
+                    <span>Arrotondamento</span>
+                    <span className="font-medium text-slate-700">{formatCurrency(totals.roundedAmount)}</span>
+                  </div>
+                  <div className="mt-3 flex justify-between items-center text-lg font-bold text-brand-700 bg-brand-50 p-3 rounded border border-brand-100">
+                     <span>Netto a lei Riservato</span>
+                     <span>{formatCurrency(totals.finalAmount)}</span>
+                  </div>
                 </div>
-                <div className="mt-3 flex justify-between items-center text-lg font-bold text-brand-700 bg-brand-50 p-3 rounded border border-brand-100">
-                   <span>Netto a lei Riservato</span>
-                   <span>{formatCurrency(totals.finalAmount)}</span>
+                <div className="mt-4 text-right">
+                    <span className="text-xs font-semibold text-slate-500 bg-slate-100 px-2 py-1 rounded">
+                      Tutti i prezzi sono IVA 22% Esclusa
+                    </span>
                 </div>
               </div>
-              <div className="mt-4 text-right">
-                  <span className="text-xs font-semibold text-slate-500 bg-slate-100 px-2 py-1 rounded">
-                    Tutti i prezzi sono IVA 22% Esclusa
-                  </span>
-              </div>
-            </div>
+            )}
           </div>
         </div>
 
-        <div className="mt-auto mb-20 grid grid-cols-2 gap-20">
-           <div className="border-t border-slate-300 pt-2 text-center text-xs text-slate-400 relative">
-              <img src={firmaImage} alt="Firma" className="absolute bottom-4 left-1/2 -translate-x-1/2 max-h-20 object-contain pointer-events-none" />
-              Timbro e Firma EasyEvent
-           </div>
-           <div className="border-t border-slate-300 pt-2 text-center text-xs text-slate-400">
-              Timbro e Firma Cliente per accettazione
-           </div>
-        </div>
+        {loadSettings().printShowSignature && (
+          <div className="mt-auto mb-20 grid grid-cols-2 gap-20">
+             <div className="border-t border-slate-300 pt-2 text-center text-xs text-slate-400 relative">
+                <img src={firmaImage} alt="Firma" className="absolute bottom-4 left-1/2 -translate-x-1/2 max-h-20 object-contain pointer-events-none" />
+                Timbro e Firma EasyEvent
+             </div>
+             <div className="border-t border-slate-300 pt-2 text-center text-xs text-slate-400">
+                Timbro e Firma Cliente per accettazione
+             </div>
+          </div>
+        )}
         <CompanyFooter />
       </div>
 
