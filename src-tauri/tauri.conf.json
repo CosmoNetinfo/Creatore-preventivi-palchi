@@ -1,6 +1,6 @@
 {
   "productName": "EasyEvent",
-  "version": "1.2.10",
+  "version": "1.2.11",
   "identifier": "com.easyevent.desktop",
   "build": {
     "beforeDevCommand": "npm run dev",
@@ -25,7 +25,7 @@
   },
   "plugins": {
     "updater": {
-      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDk3OTgyRURFQkM5MDJBODAKUldTQUtwQzgzaTZZbDdKeUN3WE40YmNzUFQ4bTM2RFhkK3hwdGhiWUpNemxVWTVsSTNlOXo0cEcK",
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEY3RkFFMzBDNjlFNDc3NUMKUldSY2QrUnBET1A2OTJzVzZxRHlEWEQvZTJrNzgveHFOVXBLUlVUaEhMbXMzVFN6bUN1MEZRbGkK",
       "endpoints": [
         "https://github.com/CosmoNetinfo/Creatore-preventivi-palchi/releases/latest/download/latest.json"
       ],
