@@ -101,8 +101,8 @@ export const DeliveryNote: React.FC<DeliveryNoteProps> = ({ data }) => {
     const pesoBulloneria = bulloneriaCount * 30; // 30g a bullone circa
     const weightRounded = Math.round(pesoBulloneria);
 
-    // 2. M8x35 + Rondelle Eccentriche per sistemi Spin
-    const isSpin = data.stageType.toUpperCase().includes("SPIN");
+    // 2. M8x35 + Rondelle Eccentriche per sistemi Spin (i modelli DB PRO utilizzano il sistema Spin)
+    const isSpin = data.stageType.toUpperCase().includes("SPIN") || data.stageType.toUpperCase().includes("DB PRO");
     let bulloneria35 = null;
     let rondelleEccentriche = null;
 
