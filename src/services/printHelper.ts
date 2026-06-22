@@ -37,21 +37,26 @@ export const printElement = (elementId: string) => {
   
   console.log("printHelper: Elemento clonato ed inserito nel body. Chiamata a window.print()...");
 
-  // Esegue la stampa dopo un piccolissimo delay per garantire il rendering del clone
-  setTimeout(() => {
-    try {
-      window.print();
-      console.log("printHelper: Stampa eseguita/inviata correttamente.");
-    } catch (err) {
-      console.error("printHelper: Eccezione catturata durante window.print():", err);
-      throw err;
-    } finally {
-      // Pulisce il DOM e ripristina lo stato originale
-      document.body.classList.remove('printing-active');
-      if (document.body.contains(printContainer)) {
-        document.body.removeChild(printContainer);
-      }
-      console.log("printHelper: Ripristinato layout originario.");
+  let cleanupDone = false;
+  const cleanup = () => {
+    if (cleanupDone) return;
+    cleanupDone = true;
+    document.body.classList.remove('printing-active');
+    if (document.body.contains(printContainer)) {
+      document.body.removeChild(printContainer);
     }
-  }, 150);
+    console.log("printHelper: Ripristinato layout originario e rimosso clone.");
+  };
+
+  // Registra l'evento dopo la stampa per la rimozione sicura del clone (supportato da Safari 13+)
+  window.addEventListener('afterprint', cleanup, { once: true });
+
+  try {
+    window.print();
+    console.log("printHelper: Stampa eseguita/inviata correttamente.");
+  } catch (err) {
+    console.error("printHelper: Eccezione catturata durante window.print():", err);
+    cleanup();
+    throw err;
+  }
 };
